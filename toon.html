@@ -1,37 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cartoon Character Game</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .main-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .header-title {
+            color: #764ba2;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .game-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .stats-display {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            min-width: 120px;
+        }
+        .correct-card {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+        .wrong-card {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+        .plant-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .plant-image {
+            border: 5px solid #667eea;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .plant-image:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
 <body>
 
-<div style="margin: 10px 0; padding: 10px; background-color: #f0f0f0;">
-    <a href="toon.html"><button>Toon Game</button></a>
-    <a href="message.html"><button>Message Cost</button></a>
-    <a href="meal.html"><button>Meal Planner</button></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" style="border-radius: 10px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">🎮 Web Apps Assignment 6</a>
+        <div class="navbar-nav">
+            <a class="nav-link active" href="toon.html">Toon Game</a>
+            <a class="nav-link" href="message.html">Message Cost</a>
+            <a class="nav-link" href="meal.html">Meal Planner</a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <h1 class="text-center header-title mb-4">🎭 Cartoon game by Chanakya Thotakura</h1>
+
+    <div class="game-section">
+        <h2 class="text-center mb-4">Cartoon Guessing Game</h2>
+
+        <form class="mb-3">
+            <div class="mb-3">
+                <label for="secretToon" class="form-label fw-bold">That's all folks 🐷</label>
+                <input type="password" class="form-control" id="secretToon" name="secretToon" value="Porky Pig">
+            </div>
+
+            <div class="mb-3">
+                <label for="guessToon" class="form-label fw-bold">Guess the toon</label>
+                <input type="text" class="form-control" id="guessToon" name="guessToon" autofocus>
+            </div>
+
+            <button type="button" id="guessButton" class="btn btn-primary btn-lg w-100" onclick="checkToon()">
+                Check the guess 🔍
+            </button>
+        </form>
+
+        <div class="stats-display" id="result">
+            <div class="stat-card correct-card">
+                <h3 class="mb-0" id="yahooCount">0</h3>
+                <small>✅ Correct Guesses</small>
+            </div>
+            <div class="stat-card wrong-card">
+                <h3 class="mb-0" id="darnCount">0</h3>
+                <small>❌ Wrong Guesses</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="plant-container">
+        <h3 class="text-center mb-3">🌸 Click to Change Plant Image</h3>
+        <img id="plantImage" class="plant-image" src="tulip.jpg" width="150" height="150" onclick="updatePic()" alt="Plant Image">
+    </div>
 </div>
 
-<h1>Cartoon game by Chanakya Thotakura</h1>
-
-<h2>Cartoon Guessing Game</h2>
-
-<form>
-    <label for="secretToon">That's all folks </label>
-    <input type="password" id="secretToon" name="secretToon" value="Porky Pig"> <br><br>
-
-    <label for="guessToon">Guess the toon </label>
-    <input type="text" id="guessToon" name="guessToon" autofocus> <br><br>
-
-    <input type="button" onclick="checkToon()" value="Check the guess">
-</form>
-
-
-<p id="result">Darn count: 0, Yahoo count: 0</p>
-
-<div>
-    <img id="plantImage" src="tulip.jpg" width="150" height="150" onclick="updatePic()" alt="Plant Image">
-</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script> 
 
@@ -60,9 +149,23 @@ function checkToon() {
         alert("Missed me");
     }
     
-    // Update the result display
-    const out = document.getElementById("result");
-    out.innerHTML = `Darn count: ${darn}, Yahoo count: ${yahoo}`;
+    // Update the display with divs
+    document.getElementById("yahooCount").textContent = yahoo;
+    document.getElementById("darnCount").textContent = darn;
+    
+    // Check if wrong guesses exceed 10
+    if (darn > 10) {
+        // Replace the onclick with new function
+        const button = document.getElementById("guessButton");
+        button.onclick = tooManyGuesses;
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-danger");
+        button.textContent = "Game Over 🚫";
+    }
+}
+
+function tooManyGuesses() {
+    alert("Sorry, too many wrong guesses.");
 }
 
 function updatePic() {
