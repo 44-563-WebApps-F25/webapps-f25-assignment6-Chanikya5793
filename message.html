@@ -1,53 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message Cost Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .main-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .header-title {
+            color: #fa709a;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .section-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #fa709a;
+        }
+        .result-box {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #0c5460;
+            font-weight: bold;
+        }
+        .radio-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background: white;
+            border: 2px solid #dee2e6;
+        }
+        .radio-item:hover {
+            background: #f8f9fa;
+            border-color: #fa709a;
+        }
+    </style>
 </head>
  
 <body>
 
-<div style="margin: 10px 0; padding: 10px; background-color: #f0f0f0;">
-    <a href="toon.html"><button>Toon Game</button></a>
-    <a href="message.html"><button>Message Cost</button></a>
-    <a href="meal.html"><button>Meal Planner</button></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 rounded">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">💰 Web Apps Assignment 6</a>
+        <div class="navbar-nav">
+            <a class="nav-link" href="toon.html">Toon Game</a>
+            <a class="nav-link active" href="message.html">Message Cost</a>
+            <a class="nav-link" href="meal.html">Meal Planner</a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-container">
+    <h1 class="text-center header-title mb-4">💌 Chanakya Thotakura message cost</h1>
+
+    <div class="section-box">
+        <h2 class="mb-4">Calculate Message Costs</h2>
+
+        <form>
+            <div class="mb-3">
+                <label for="standardCharge" class="form-label fw-bold">💵 Enter cost per letter</label>
+                <input type="number" class="form-control" id="standardCharge" name="standardCharge" value="0.50" step="0.01">
+            </div>
+
+            <div class="mb-3">
+                <label for="discountLength" class="form-label fw-bold">📏 Enter the length needed for the discount</label>
+                <input type="number" class="form-control" id="discountLength" name="discountLength" value="20">
+            </div>
+
+            <div class="mb-3">
+                <label for="discountCharge" class="form-label fw-bold">🎯 Enter the discount rate</label>
+                <input type="number" class="form-control" id="discountCharge" name="discountCharge" value="0.25" step="0.01">
+            </div>
+
+            <button type="button" class="btn btn-success btn-lg w-100" onclick="amounts()">
+                Show total 📊
+            </button>
+        </form>
+
+        <div class="result-box mt-3" id="result">
+            Results will be displayed here
+        </div>
+    </div>
+
+    <div class="section-box">
+        <h2 class="mb-4">🔢 Radio Button Operations</h2>
+
+        <form>
+            <div class="form-check radio-item">
+                <input class="form-check-input" type="radio" id="radio_times" name="operation" value="times" onclick="chooseOp()" checked>
+                <label class="form-check-label fw-bold" for="radio_times">
+                    ✖️ Product (Multiplication)
+                </label>
+            </div>
+
+            <div class="form-check radio-item">
+                <input class="form-check-input" type="radio" id="radio_add" name="operation" value="add" onclick="chooseOp()">
+                <label class="form-check-label fw-bold" for="radio_add">
+                    ➕ Sum (Addition)
+                </label>
+            </div>
+
+            <div class="form-check radio-item">
+                <input class="form-check-input" type="radio" id="radio_mod" name="operation" value="mod" onclick="chooseOp()">
+                <label class="form-check-label fw-bold" for="radio_mod">
+                    ➗ Modulo (Remainder)
+                </label>
+            </div>
+        </form>
+
+        <div class="result-box mt-3" id="operationResult">
+            Choose an operation
+        </div>
+    </div>
 </div>
 
-<h1>Chanakya Thotakura message cost</h1>
-
-<h2>Calculate Message Costs</h2>
-
-<form>
-    <label for="standardCharge">Enter cost per letter </label>
-    <input type="number" id="standardCharge" name="standardCharge" value="0.50" step="0.01"> <br><br>
-
-    <label for="discountLength">Enter the length needed for the discount </label>
-    <input type="number" id="discountLength" name="discountLength" value="20"> <br><br>
-
-    <label for="discountCharge">Enter the discount rate </label>
-    <input type="number" id="discountCharge" name="discountCharge" value="0.25" step="0.01"> <br><br>
-
-    <input type="button" onclick="amounts()" value="Show total">
-</form>
-
-
-<p id="result">Results will be displayed here</p>
-
-<hr>
-
-<h2>Radio Button Operations</h2>
-
-<form>
-    <input type="radio" id="radio_times" name="operation" value="times" onclick="chooseOp()" checked>
-    <label for="radio_times">product</label><br>
-
-    <input type="radio" id="radio_add" name="operation" value="add" onclick="chooseOp()">
-    <label for="radio_add">sum</label><br>
-
-    <input type="radio" id="radio_mod" name="operation" value="mod" onclick="chooseOp()">
-    <label for="radio_mod">mod</label><br>
-</form>
-
-<p id="operationResult">Choose an operation</p>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script> 
 
