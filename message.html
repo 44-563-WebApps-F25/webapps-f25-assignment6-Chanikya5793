@@ -26,6 +26,23 @@
 
 <p id="result">Results will be displayed here</p>
 
+<hr>
+
+<h2>Radio Button Operations</h2>
+
+<form>
+    <input type="radio" id="radio_times" name="operation" value="times" onclick="chooseOp()" checked>
+    <label for="radio_times">product</label><br>
+
+    <input type="radio" id="radio_add" name="operation" value="add" onclick="chooseOp()">
+    <label for="radio_add">sum</label><br>
+
+    <input type="radio" id="radio_mod" name="operation" value="mod" onclick="chooseOp()">
+    <label for="radio_mod">mod</label><br>
+</form>
+
+<p id="operationResult">Choose an operation</p>
+
 <script> 
 
 function amounts() {
@@ -63,6 +80,35 @@ function amounts() {
     // Update the result display
     const out = document.getElementById("result");
     out.innerHTML = "Totals are: " + totalCosts;
+}
+
+function chooseOp() {
+    console.log("Performing operation")
+    
+    // Get price from standardCharge input
+    const price = parseFloat(document.getElementById("standardCharge").value);
+    
+    // Get breakAt from discountLength input
+    const breakAt = parseInt(document.getElementById("discountLength").value);
+    
+    let result;
+    let operation;
+    
+    // Check which radio button is selected
+    if (document.getElementById("radio_times").checked) {
+        result = price * breakAt;
+        operation = "*";
+    } else if (document.getElementById("radio_add").checked) {
+        result = price + breakAt;
+        operation = "+";
+    } else if (document.getElementById("radio_mod").checked) {
+        result = breakAt % price;
+        operation = "%";
+    }
+    
+    // Update the operation result display
+    const out = document.getElementById("operationResult");
+    out.innerHTML = `${price} ${operation} ${breakAt} is ${result}`;
 }
 </script>
 
